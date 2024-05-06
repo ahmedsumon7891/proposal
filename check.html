@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Do you love me ?</title>
+    <link rel="stylesheet" href="styles.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div id="nameInput">
+        <p><span class="light">"W</span>elcome to our website. Are you ready to begin your journey towards forever?</p>
+        <input type="text" name="Name" id="name" placeholder="Enter your full name."/>
+        <button type="button" id="nameSubmit">Submit</button>
+    </div>
+
+    <div id="questionWrapper" style="display: none;">
+        <h1>This is only for fun. Answer the following question. You can choose Yes or No.<br/> Thank you ❤️😊</h1>
+        <div class="wrapper">
+            <img src="love.png" alt="love" />
+            <h2 class="question">Do you love me?</h2>
+            <div class="btn_group">
+                <button class="yes_btn">Yes</button>
+                <button class="no_btn">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <h3>Contact Me:</h3>
+        <h4><a class="Facebook" href="https://facebook.com/ahmed.sumon91">FACEBOOK</a> <br/>
+        <a href="mailto:atiqur5535@gmail.com?subject=feedback">EMAIL ME</a><br/>
+        All rights reserved by Ahmed Sumon © 2024
+        </h4>
+    </div>
+
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <script>
+        const wrapper = document.querySelector('.wrapper');
+        const question = document.querySelector('.question');
+        const yesBtn = document.querySelector('.yes_btn');
+        const noBtn = document.querySelector('.no_btn');
+        let wrapperRect = wrapper.getBoundingClientRect(); // Define wrapperRect and noBtnRect outside of event listeners
+        let noBtnRect = noBtn.getBoundingClientRect();
+
+        const nameInput = document.getElementById('nameInput');
+        const nameSubmit = document.getElementById('nameSubmit');
+        const questionWrapper = document.getElementById('questionWrapper');
+        const nameField = document.getElementById('name');
+        let userName = '';
+
+        nameSubmit.addEventListener('click', function () {
+            const name = nameField.value.trim();
+            if (name !== '') {
+                nameInput.style.display = 'none';
+                questionWrapper.style.display = 'block';
+                userName = name; // Store the user's name
+            } else {
+                alert('Please enter your name.');
+            }
+        });
+
+        yesBtn.addEventListener('click', () => {
+            question.innerHTML = 'I Love You Too!😍';
+            if (userName !== '') {
+                // Send email with response "Yes"
+                sendEmail(userName, 'Yes');
+            } else {
+                alert('Please enter your name first.');
+            }
+        });
+
+        noBtn.addEventListener('mouseover', () => {
+            wrapperRect = wrapper.getBoundingClientRect(); // Recalculate wrapperRect on mouseover
+            noBtnRect = noBtn.getBoundingClientRect(); // Recalculate noBtnRect on mouseover
+            const i = Math.floor(Math.random() * (wrapperRect.width - noBtnRect.width)) + 1;
+            const j = Math.floor(Math.random() * (wrapperRect.height - noBtnRect.height)) + 1;
+            noBtn.style.left = i + 'px';
+            noBtn.style.top = j + 'px';
+        });
+
+        noBtn.addEventListener('click', () => {
+            question.innerHTML = 'So Sad 💔😏';
+            if (userName !== '') {
+                // Send email with response "No"
+                sendEmail(userName, 'No');
+            } else {
+                alert('Please enter your name first.');
+            }
+        });
+
+        function sendEmail(name, response) {
+    Email.send({
+        Host: "smtp.elasticemail.com",
+        Username: "atiqur5535@gmail.com", // Replace this with your Elastic Email API key
+        Password: "DC96087AE9E139F2442E983F4CB754E7D244", // Replace this with your Elastic Email API key
+        Port:"2525",
+        To: "atiqur5535@gmail.com",
+        From: "atiqur5535@gmail.com",
+        Subject: "User Response",
+        Body: `Name: ${name}\nResponse: ${response}`,
+    }).then(
+        message => alert('Thank you!\n' + message)
+    );
+            
+        }
+    </script>
+</body>
+</html>
